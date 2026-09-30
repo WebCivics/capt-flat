@@ -1,0 +1,4 @@
+# Draft proposal site — not yet approved by the venue.
+# Block all crawlers until the owners sign off.
+User-agent: *
+Disallow: /
