@@ -14,6 +14,7 @@
 <meta property="og:title" content="Explore — Local Attractions | Captains Flat Hotel">
 <meta property="og:description" content="Things to see and do around Captains Flat NSW — about an hour from Canberra. The lookout, Wilkins Park on the Molonglo River, the war memorial, fishing at the dam and Tallaganda State Forest.">
 <meta property="og:image" content="https://www.captainsflathotel.com.au/images/gallery/ausday-01.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="499">
 <meta property="og:image:alt" content="Captains Flat Hotel — Local Attractions">
@@ -21,6 +22,7 @@
 <meta name="twitter:title" content="Explore — Local Attractions | Captains Flat Hotel">
 <meta name="twitter:description" content="Things to see and do around Captains Flat NSW — about an hour from Canberra. The lookout, Wilkins Park on the Molonglo River, the war memorial, fishing at the dam and Tallaganda State Forest.">
 <meta name="twitter:image" content="https://www.captainsflathotel.com.au/images/gallery/ausday-01.jpg">
+<meta name="twitter:image:alt" content="Captains Flat Hotel — Local Attractions">
 <meta name="theme-color" content="#131110">
 <script type="application/ld+json">
 {
@@ -64,6 +66,7 @@
         "https://www.captainsflathotel.com.au/images/whisky-bar.jpg",
         "https://www.captainsflathotel.com.au/images/floating-glass.jpg"
       ],
+      "logo": "https://www.captainsflathotel.com.au/images/logo-1938.jpg",
       "priceRange": "$$",
       "foundingDate": "1938",
       "currenciesAccepted": "AUD",
@@ -167,6 +170,13 @@
       "priceRange": "$$",
       "acceptsReservations": "True",
       "menu": "https://www.captainsflathotel.com.au/menu.html",
+      "hasMenu": {
+        "@id": "https://www.captainsflathotel.com.au/menu.html#menu"
+      },
+      "image": "https://www.captainsflathotel.com.au/images/offer-meal.jpg",
+      "containedInPlace": {
+        "@id": "https://www.captainsflathotel.com.au/#hotel"
+      },
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "51 Foxlow Street",
@@ -258,7 +268,9 @@
         "longitude": 149.445003
       },
       "image": "https://www.captainsflathotel.com.au/images/whisky-bar.jpg",
-      "servesCuisine": "Whisky, Spirits, Wine, Cocktails"
+      "containedInPlace": {
+        "@id": "https://www.captainsflathotel.com.au/#hotel"
+      }
     },
     {
       "@type": "WebPage",
@@ -269,14 +281,20 @@
       "isPartOf": {
         "@id": "https://www.captainsflathotel.com.au/#website"
       },
+      "breadcrumb": {
+        "@id": "https://www.captainsflathotel.com.au/explore.html#breadcrumb"
+      },
       "about": {
-        "@id": "https://www.captainsflathotel.com.au/#hotel"
+        "@id": "https://www.captainsflathotel.com.au/explore.html#attractions"
       },
       "primaryImageOfPage": {
         "@type": "ImageObject",
         "url": "https://www.captainsflathotel.com.au/images/gallery/ausday-01.jpg"
       },
-      "inLanguage": "en-AU"
+      "inLanguage": "en-AU",
+      "mainEntity": {
+        "@id": "https://www.captainsflathotel.com.au/explore.html#attractions"
+      }
     },
     {
       "@type": "BreadcrumbList",
@@ -310,11 +328,14 @@
             "description": "Panoramic views over the town and the surrounding Jingera Mountains — great for photography and getting your bearings.",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "51 Foxlow Street",
               "addressLocality": "Captains Flat",
               "addressRegion": "NSW",
               "postalCode": "2623",
               "addressCountry": "AU"
+            },
+            "containedInPlace": {
+              "@type": "City",
+              "name": "Captains Flat, NSW"
             }
           }
         },
@@ -327,11 +348,14 @@
             "description": "The popular, quirky landmark greeting visitors on arrival — a favourite photo stop.",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "51 Foxlow Street",
               "addressLocality": "Captains Flat",
               "addressRegion": "NSW",
               "postalCode": "2623",
               "addressCountry": "AU"
+            },
+            "containedInPlace": {
+              "@type": "City",
+              "name": "Captains Flat, NSW"
             }
           }
         },
@@ -344,11 +368,14 @@
             "description": "Scenic recreation ground beside the Molonglo River, proclaimed 1893. Historic water trough and picnic facilities.",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "51 Foxlow Street",
               "addressLocality": "Captains Flat",
               "addressRegion": "NSW",
               "postalCode": "2623",
               "addressCountry": "AU"
+            },
+            "containedInPlace": {
+              "@type": "City",
+              "name": "Captains Flat, NSW"
             }
           }
         },
@@ -361,11 +388,14 @@
             "description": "Honours local history and those who served, in the centre of town near Wilkins Park.",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "51 Foxlow Street",
               "addressLocality": "Captains Flat",
               "addressRegion": "NSW",
               "postalCode": "2623",
               "addressCountry": "AU"
+            },
+            "containedInPlace": {
+              "@type": "City",
+              "name": "Captains Flat, NSW"
             }
           }
         },
@@ -378,11 +408,14 @@
             "description": "A peaceful, secluded spot for anglers, surrounded by bushland and unique geological formations.",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "51 Foxlow Street",
               "addressLocality": "Captains Flat",
               "addressRegion": "NSW",
               "postalCode": "2623",
               "addressCountry": "AU"
+            },
+            "containedInPlace": {
+              "@type": "City",
+              "name": "Captains Flat, NSW"
             }
           }
         },
@@ -395,11 +428,14 @@
             "description": "Rugged forest surrounding the area — popular for 4WD exploration, bushwalking and camping.",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "51 Foxlow Street",
               "addressLocality": "Captains Flat",
               "addressRegion": "NSW",
               "postalCode": "2623",
               "addressCountry": "AU"
+            },
+            "containedInPlace": {
+              "@type": "City",
+              "name": "Captains Flat, NSW"
             }
           }
         }

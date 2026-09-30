@@ -14,6 +14,7 @@
 <meta property="og:title" content="Menu — Captains Flat Hotel">
 <meta property="og:description" content="Pub classics, starters, kids meals and desserts at the Captains Flat Hotel. Schnitzel, parmi, steaks, wings and more.">
 <meta property="og:image" content="https://www.captainsflathotel.com.au/images/offer-meal.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="900">
 <meta property="og:image:alt" content="Captains Flat Hotel — Menu">
@@ -21,6 +22,7 @@
 <meta name="twitter:title" content="Menu — Captains Flat Hotel">
 <meta name="twitter:description" content="Pub classics, starters, kids meals and desserts at the Captains Flat Hotel. Schnitzel, parmi, steaks, wings and more.">
 <meta name="twitter:image" content="https://www.captainsflathotel.com.au/images/offer-meal.jpg">
+<meta name="twitter:image:alt" content="Captains Flat Hotel — Menu">
 <meta name="theme-color" content="#131110">
 <script type="application/ld+json">
 {
@@ -64,6 +66,7 @@
         "https://www.captainsflathotel.com.au/images/whisky-bar.jpg",
         "https://www.captainsflathotel.com.au/images/floating-glass.jpg"
       ],
+      "logo": "https://www.captainsflathotel.com.au/images/logo-1938.jpg",
       "priceRange": "$$",
       "foundingDate": "1938",
       "currenciesAccepted": "AUD",
@@ -167,6 +170,13 @@
       "priceRange": "$$",
       "acceptsReservations": "True",
       "menu": "https://www.captainsflathotel.com.au/menu.html",
+      "hasMenu": {
+        "@id": "https://www.captainsflathotel.com.au/menu.html#menu"
+      },
+      "image": "https://www.captainsflathotel.com.au/images/offer-meal.jpg",
+      "containedInPlace": {
+        "@id": "https://www.captainsflathotel.com.au/#hotel"
+      },
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "51 Foxlow Street",
@@ -258,7 +268,9 @@
         "longitude": 149.445003
       },
       "image": "https://www.captainsflathotel.com.au/images/whisky-bar.jpg",
-      "servesCuisine": "Whisky, Spirits, Wine, Cocktails"
+      "containedInPlace": {
+        "@id": "https://www.captainsflathotel.com.au/#hotel"
+      }
     },
     {
       "@type": "WebPage",
@@ -269,6 +281,9 @@
       "isPartOf": {
         "@id": "https://www.captainsflathotel.com.au/#website"
       },
+      "breadcrumb": {
+        "@id": "https://www.captainsflathotel.com.au/menu.html#breadcrumb"
+      },
       "about": {
         "@id": "https://www.captainsflathotel.com.au/#restaurant"
       },
@@ -276,7 +291,10 @@
         "@type": "ImageObject",
         "url": "https://www.captainsflathotel.com.au/images/offer-meal.jpg"
       },
-      "inLanguage": "en-AU"
+      "inLanguage": "en-AU",
+      "mainEntity": {
+        "@id": "https://www.captainsflathotel.com.au/menu.html#menu"
+      }
     },
     {
       "@type": "BreadcrumbList",
@@ -300,6 +318,7 @@
       "@type": "Menu",
       "@id": "https://www.captainsflathotel.com.au/menu.html#menu",
       "name": "Captains Flat Hotel Menu",
+      "url": "https://www.captainsflathotel.com.au/menu.html",
       "hasMenuSection": [
         {
           "@type": "MenuSection",

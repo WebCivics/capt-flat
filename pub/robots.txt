@@ -1,4 +1,7 @@
 # Draft proposal site — not yet approved by the venue.
 # Block all crawlers until the owners sign off.
+# At go-live: remove the Disallow line; the Sitemap line is already in place.
 User-agent: *
 Disallow: /
+
+Sitemap: https://www.captainsflathotel.com.au/sitemap.xml

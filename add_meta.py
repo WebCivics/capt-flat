@@ -3,13 +3,21 @@
 import json, os, re
 from PIL import Image
 
-SITE = "https://www.captainsflathotel.com.au"
+SITE = os.environ.get("SITE_URL", "https://www.captainsflathotel.com.au").rstrip("/")
 NAME = "Captains Flat Hotel"
 PUB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pub")
 
 ADDR = {
     "@type": "PostalAddress",
     "streetAddress": "51 Foxlow Street",
+    "addressLocality": "Captains Flat",
+    "addressRegion": "NSW",
+    "postalCode": "2623",
+    "addressCountry": "AU",
+}
+# Locality-level address for places in town that aren't the hotel itself
+ADDR_LOCALITY = {
+    "@type": "PostalAddress",
     "addressLocality": "Captains Flat",
     "addressRegion": "NSW",
     "postalCode": "2623",
@@ -66,6 +74,7 @@ def hotel_node():
         "geo": GEO,
         "image": [img_url("hero-front.jpg"), img_url("whisky-bar.jpg"),
                   img_url("floating-glass.jpg")],
+        "logo": img_url("logo-1938.jpg"),
         "priceRange": "$$",
         "foundingDate": "1938",
         "currenciesAccepted": "AUD",
@@ -107,6 +116,9 @@ def restaurant_node():
         "priceRange": "$$",
         "acceptsReservations": "True",
         "menu": f"{SITE}/menu.html",
+        "hasMenu": {"@id": f"{SITE}/menu.html#menu"},
+        "image": img_url("offer-meal.jpg"),
+        "containedInPlace": {"@id": f"{SITE}/#hotel"},
         "address": ADDR,
         "geo": GEO,
         "openingHoursSpecification": oh(HOURS_KITCHEN_LUNCH + HOURS_KITCHEN_DINNER),
@@ -123,7 +135,7 @@ def bar1938_node():
         "address": ADDR,
         "geo": GEO,
         "image": img_url("whisky-bar.jpg"),
-        "servesCuisine": "Whisky, Spirits, Wine, Cocktails",
+        "containedInPlace": {"@id": f"{SITE}/#hotel"},
     }
 
 def room_nodes():
@@ -170,18 +182,23 @@ def website_node():
         "inLanguage": "en-AU",
     }
 
-def webpage_node(fname, title, desc, og_img, ptype="WebPage", about="#hotel"):
-    return {
+def webpage_node(fname, title, desc, og_img, ptype="WebPage",
+                 about="#hotel", main_entity=None):
+    node = {
         "@type": ptype,
         "@id": f"{page_url(fname)}#webpage",
         "url": page_url(fname),
         "name": title,
         "description": desc,
         "isPartOf": {"@id": f"{SITE}/#website"},
+        "breadcrumb": {"@id": f"{page_url(fname)}#breadcrumb"},
         "about": {"@id": f"{SITE}/{about}"},
         "primaryImageOfPage": {"@type": "ImageObject", "url": img_url(og_img)},
         "inLanguage": "en-AU",
     }
+    if main_entity:
+        node["mainEntity"] = {"@id": f"{SITE}/{main_entity}"}
+    return node
 
 def breadcrumb(fname, label):
     items = [{"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"}]
@@ -204,6 +221,7 @@ def menu_node():
     return {
         "@type": "Menu", "@id": f"{SITE}/menu.html#menu",
         "name": f"{NAME} Menu",
+        "url": f"{SITE}/menu.html",
         "hasMenuSection": [
             section("Starters", [
                 menu_item("Garlic Bread", 9.50),
@@ -316,7 +334,8 @@ def attractions_node():
         "itemListElement": [
             {"@type": "ListItem", "position": i + 1,
              "item": {"@type": "TouristAttraction", "name": n, "description": d,
-                      "address": ADDR}}
+                      "address": ADDR_LOCALITY,
+                      "containedInPlace": {"@type": "City", "name": "Captains Flat, NSW"}}}
             for i, (n, d) in enumerate(sights)],
     }
 
@@ -326,7 +345,8 @@ def campground_node():
         "name": "Wilkins Memorial Park Camping Area",
         "alternateName": "Wilkins Park",
         "description": "Donation-based camping beside the Molonglo River in Captains Flat, managed by a local community committee on behalf of Queanbeyan-Palerang Regional Council. Hot showers, toilets and drinking water on site; donations via the mailbox at the Men's Shed opposite.",
-        "address": ADDR,
+        "url": f"{SITE}/camp.html",
+        "address": ADDR_LOCALITY,
         "priceRange": "Donation",
         "amenityFeature": [
             {"@type": "LocationFeatureSpecification", "name": "Hot showers", "value": True},
@@ -350,13 +370,13 @@ PAGES = {
         "title": "Menu — Captains Flat Hotel",
         "desc": "Pub classics, starters, kids meals and desserts at the Captains Flat Hotel. Schnitzel, parmi, steaks, wings and more.",
         "og": "offer-meal.jpg", "crumb": "Menu", "ptype": "WebPage",
-        "about": "#restaurant", "extra": [menu_node],
+        "about": "#restaurant", "extra": [menu_node], "main": "menu.html#menu",
     },
     "on-tap.html": {
         "title": "Beers on Tap — Captains Flat Hotel",
         "desc": "Cold draught beer at the Captains Flat Hotel — eight taps pouring classic Australian lagers and more.",
         "og": "fireplace.jpg", "crumb": "Beers on Tap", "ptype": "WebPage",
-        "extra": [taps_node],
+        "extra": [taps_node], "main": "on-tap.html#menu",
     },
     "1938.html": {
         "title": "1938 — The Whisky Bar | Captains Flat Hotel",
@@ -374,25 +394,29 @@ PAGES = {
         "title": "Gallery — Captains Flat Hotel",
         "desc": "Photos from the Captains Flat Hotel — the 1938 whisky bar, movie shoots, race days and community events.",
         "og": "gallery/bar-01.jpg", "crumb": "Gallery", "ptype": "CollectionPage",
-        "extra": [gallery_node],
+        "extra": [gallery_node], "about": "gallery.html#gallery",
+        "main": "gallery.html#gallery",
     },
     "merch.html": {
         "title": "Merchandise — Captains Flat Hotel",
         "desc": "Captains Flat Hotel merch — hoodies, tees, trucker hats, beanies, stubby holders and bumper stickers. Available at the bar.",
         "og": "merch-hero.jpg", "crumb": "Merchandise", "ptype": "CollectionPage",
-        "extra": [merch_node],
+        "extra": [merch_node], "about": "merch.html#items",
+        "main": "merch.html#items",
     },
     "camp.html": {
         "title": "Camp at The Flat — Caravans, Campers & Backpackers | Captains Flat Hotel",
         "desc": "Donation-based camping at Wilkins Memorial Park, Captains Flat — or park the van and take a hotel room from $90. Hot showers, toilets and drinking water beside the Molonglo River.",
         "og": "hero-front.jpg", "crumb": "Camping", "ptype": "WebPage",
-        "extra": [campground_node],
+        "extra": [campground_node], "about": "camp.html#campground",
+        "main": "camp.html#campground",
     },
     "explore.html": {
         "title": "Explore — Local Attractions | Captains Flat Hotel",
         "desc": "Things to see and do around Captains Flat NSW — about an hour from Canberra. The lookout, Wilkins Park on the Molonglo River, the war memorial, fishing at the dam and Tallaganda State Forest.",
         "og": "gallery/ausday-01.jpg", "crumb": "Local Attractions", "ptype": "WebPage",
-        "extra": [attractions_node],
+        "extra": [attractions_node], "about": "explore.html#attractions",
+        "main": "explore.html#attractions",
     },
     "history.html": {
         "title": "The History of Captains Flat — Boom, Bust & the Pub | Captains Flat Hotel",
@@ -435,6 +459,7 @@ def build(fname, cfg):
 <meta property="og:title" content="{cfg['title']}">
 <meta property="og:description" content="{cfg['desc']}">
 <meta property="og:image" content="{img}">
+<meta property="og:image:type" content="{'image/png' if cfg['og'].endswith('.png') else 'image/jpeg'}">
 <meta property="og:image:width" content="{w}">
 <meta property="og:image:height" content="{h}">
 <meta property="og:image:alt" content="{NAME} — {cfg['crumb']}">
@@ -442,6 +467,7 @@ def build(fname, cfg):
 <meta name="twitter:title" content="{cfg['title']}">
 <meta name="twitter:description" content="{cfg['desc']}">
 <meta name="twitter:image" content="{img}">
+<meta name="twitter:image:alt" content="{NAME} — {cfg['crumb']}">
 <meta name="theme-color" content="#131110">'''
 
     graph = [
@@ -450,7 +476,8 @@ def build(fname, cfg):
         restaurant_node(),
         bar1938_node(),
         webpage_node(fname, cfg["title"], cfg["desc"], cfg["og"],
-                     cfg["ptype"], cfg.get("about", "#hotel")),
+                     cfg["ptype"], cfg.get("about", "#hotel"),
+                     cfg.get("main")),
         breadcrumb(fname, cfg["crumb"]),
     ]
     for fn in cfg["extra"]:
@@ -466,10 +493,22 @@ def build(fname, cfg):
 for fname, cfg in PAGES.items():
     path = os.path.join(PUB, fname)
     doc = open(path, encoding="utf-8").read()
-    if "og:site_name" in doc:
-        print(f"{fname}: already done"); continue
     marker = '<link rel="icon"'
     idx = doc.index(marker)
+    if "og:site_name" in doc:
+        # strip previously injected block (canonical through ld+json) and rebuild
+        start = doc.index('<link rel="canonical"')
+        doc = doc[:start] + doc[idx:]
+        idx = doc.index(marker)
     doc = doc[:idx] + build(fname, cfg) + "\n" + doc[idx:]
     open(path, "w", encoding="utf-8").write(doc)
     print(f"{fname}: injected {doc.count('application/ld+json')} json-ld block(s)")
+
+# ---------- sitemap ----------
+sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+for fname in PAGES:
+    sitemap.append(f"  <url><loc>{page_url(fname)}</loc></url>")
+sitemap.append("</urlset>")
+open(os.path.join(PUB, "sitemap.xml"), "w", encoding="utf-8").write("\n".join(sitemap) + "\n")
+print("sitemap.xml written")
